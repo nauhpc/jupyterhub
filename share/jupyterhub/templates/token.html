@@ -24,6 +24,7 @@
   </div>
 
   <div class="row">
+    <p>
       <div id="token-area" class="col-md-6 col-md-offset-3" style="display: none;">
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -40,6 +41,7 @@
           </div>
         </div>
       </div>
+    </p>
   </div>
 
   {% if api_tokens %}
@@ -60,7 +62,7 @@
       </thead>
       <tbody>
         {% for token in api_tokens %}
-        <tr class="token-row" data-token-id="{{token.api_id}}">
+        <tr class="token-row" data-token-id="{{token.api_id}}"">
           {% block token_row scoped %}
           <td class="note-col col-sm-5">{{token.note}}</td>
           <td class="time-col col-sm-3">
@@ -109,7 +111,7 @@
       <tbody>
         {% for client in oauth_clients %}
         <tr class="token-row"
-          data-token-id="{{ client['token_id'] }}">
+          data-token-id="{{ client['token_id'] }}"">
           {% block client_row scoped %}
           <td class="note-col col-sm-5">{{ client['description'] }}</td>
           <td class="time-col col-sm-3">
@@ -127,7 +129,8 @@
             {%- endif -%}
           </td>
           <td class="col-sm-1 text-center">
-            <button class="revoke-token-btn btn btn-xs btn-danger">revoke</button>
+            <button class="revoke-token-btn btn btn-xs btn-danger">revoke</a>
+          </button>
           {% endblock client_row %}
         </tr>
         {% endfor %}
@@ -136,11 +139,11 @@
   </div>
   {% endif %}
 </div>
-{% endblock main %}
+{% endblock %}
 
 {% block script %}
 {{ super() }}
 <script type="text/javascript">
 require(["token"]);
 </script>
-{% endblock script %}
+{% endblock %}
