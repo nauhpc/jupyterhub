@@ -604,12 +604,44 @@ class PAMAuthenticator(LocalAuthenticator):
             raise _pamela_error from None
         super().__init__(**kwargs)
 
+    # ADDED IN -chance
+    custom = False
+    memory = 0
+    cpus   = 0
+    tasks  = 0
+    time   = 0
+    nodes  = 0
+
     @run_on_executor
     def authenticate(self, handler, data):
         """Authenticate with PAM, and return the username if login is successful.
 
         Return None otherwise.
         """
+        # ADDED IN -chance
+        try:
+            if data['custom'] == 'on':
+                self.log.debug("Changing spawner class...")
+                self.custom = True
+
+                if data['memory']:
+                    self.memory = int(data['memory'])
+ 
+                if data['cpus']:
+                    self.cpu = int(data['cpus'])
+                 
+                if data['tasks']:
+                    self.tasks = int(data['tasks'])
+                
+                if data['time']:
+                    self.time = data['time']
+                
+                if data['node']:
+                    self.nodes = int(data['node'])
+
+        except KeyError as e:
+            self.log.debug("Ignoring custom settings...")
+                               
         username = data['username']
         try:
             pamela.authenticate(username, data['password'], service=self.service, encoding=self.encoding)
